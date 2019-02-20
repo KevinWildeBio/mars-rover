@@ -16,7 +16,7 @@ const rover = (position, path) => ({
   orientation: position[2],
   lost: false,
   path: path.split(''),
-  sniff: position => smellList.includes(position)
+  sniff: string => smellList.includes(string)
 });
 
 function setupMission(input) {
@@ -39,40 +39,40 @@ function beginMission(robots) {
 
 function navigatePath(robot) {
   for (var i = 0; i < robot.path.length; i++) {
-    // console.log('SMELL: ', robot.sniff(robot.position));
-    // console.log('GRID: ', grid);
-    console.log(`${robot.xLoc} ${robot.yLoc} ${robot.orientation}`);
-    console.log(robot.path[i]);
-
+    
     if (robot.path[i] === 'R') robot.orientation = pivotRight(robot);
     if (robot.path[i] === 'L') robot.orientation = pivotLeft(robot);
 
+    if (robot.sniff(`${robot.xLoc}${robot.yLoc}${robot.orientation}`)) continue;
+
+    //wanted to move this out into its own function but ran out of time
     if (robot.path[i] === 'F') {
-      // console.log('MOVING FORWARDS');
-      if (robot.orientation === 'E') robot.xLoc = robot.xLoc + 1;
-      if (robot.orientation === 'W') robot.xLoc = robot.xLoc - 1;
-      if (robot.orientation === 'N') robot.yLoc = robot.yLoc + 1;
-      if (robot.orientation === 'S') robot.yLoc = robot.yLoc - 1;
+      let newXLoc = robot.xLoc,
+        newYLoc = robot.yLoc;
+
+      if (robot.orientation === 'E') newXLoc = parseInt(robot.xLoc + 1, 10);
+      if (robot.orientation === 'W') newXLoc = parseInt(robot.xLoc - 1, 10);
+      if (robot.orientation === 'N') newYLoc = parseInt(robot.yLoc + 1, 10);
+      if (robot.orientation === 'S') newYLoc = parseInt(robot.yLoc - 1, 10);
 
       if (
-        robot.xLoc < 0 ||
-        robot.xLoc > grid[0] ||
-        robot.yLoc < 0 ||
-        robot.yLoc > grid[1]
+        newXLoc < 0 ||
+        newXLoc > grid[0] ||
+        newYLoc < 0 ||
+        newYLoc > grid[1]
       ) {
+        smellList.push(`${robot.xLoc}${robot.yLoc}${robot.orientation}`);
         robot.lost = true;
+      } else {
+        robot.xLoc = newXLoc;
+        robot.yLoc = newYLoc;
       }
     }
 
-    if (robot.lost) {
-      sendMessage(robot);
-      break;
-    }
+    if (robot.lost) break;
   }
 
   sendMessage(robot);
-
-  console.log('-------');
 }
 
 function pivotRight(robot) {
