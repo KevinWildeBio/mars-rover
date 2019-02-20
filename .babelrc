@@ -1,0 +1,14 @@
+{
+  "presets": [
+    "es2015",
+    "react",
+    "stage-1"
+  ],
+  "plugins": [
+    "transform-runtime",
+    "transform-object-rest-spread",
+    "transform-async-to-generator",
+    "lodash",
+    "syntax-dynamic-import"
+  ]
+}
