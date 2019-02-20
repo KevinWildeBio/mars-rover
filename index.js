@@ -15,3 +15,9 @@ const rover = ({ position }) => ({
   path: '',
   sniff: func
 });
+
+function mission(input) {
+  console.log(input);
+}
+
+mission(input);
