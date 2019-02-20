@@ -10,19 +10,14 @@ const input = `
 
 const smellList = [];
 const compassArray = ['N', 'E', 'S', 'W'];
-// const grid;
+let grid;
 
-//create a moveset which can easily expanded
-// const moveSet = {
-//   R: console.log('TURN RIGHT'),
-//   L: console.log('TURN LEFT'),
-//   F: console.log('MOVE FORWARDS')
-// }
 
 const stringToArray = (string, seperator) => string.split(seperator);
 
 const rover = (position, path) => ({
-  position: [position[0], position[1]],
+  xLoc: parseInt(position[0], 10),
+  yLoc: parseInt(position[1], 10),
   orientation: position[2],
   lost: false,
   path: stringToArray(path, ''),
@@ -38,8 +33,8 @@ function setupMission(input) {
 
 function beginMission(robot) {
   for (var i = 0; i < robot.path.length; i++) {
-    // console.log(robot.sniff('SMELL: ', robot.position));
-    console.log('ORI: ', robot.orientation);
+    if (robot.lost) break;
+    console.log(robot.sniff('SMELL: ', robot.position));
     if (robot.path[i] === 'R') {
       let currentIndex = compassArray.indexOf(robot.orientation);
       let newIndex = currentIndex - 1 < 0 ? compassArray.length - 1 : currentIndex - 1;
@@ -53,10 +48,14 @@ function beginMission(robot) {
     }
 
     if (robot.path[i] === 'F') {
-
+      if (robot.orientation === 'N') robot.xLoc = robot.xLoc + 1;
+      if (robot.orientation === 'S') robot.xLoc = robot.xLoc - 1;
+      if (robot.orientation === 'E') robot.yLoc = robot.yLoc + 1;
+      if (robot.orientation === 'W') robot.yLoc = robot.yLoc - 1;
     }
-    if (robot.lost) break;
-    // else robot.setPosition();
+
+    console.log('ORI: ', robot.orientation);
+    console.log('POSITION: ', robot.xLoc, robot.yLoc);
   }
 }
 
