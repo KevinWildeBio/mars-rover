@@ -8,16 +8,20 @@ const input = `
   LLFFFLFLFL
 `
 
-const rover = ({ position }) => ({
+const stringToArray = string => string.split('');
+
+const rover = ( position, path ) => ({
   position,
   orientation: '',
   lost: false,
-  path: '',
-  sniff: func
+  path: stringToArray(path),
+  sniff: () => console.log('SNIFF!')
 });
 
 function mission(input) {
   console.log(input);
+  const sprit = rover([5,3], 'RFRFRFRF');
+  console.log(sprit);
 }
 
 mission(input);
