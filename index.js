@@ -7,3 +7,11 @@ const input = `
   0 3 W
   LLFFFLFLFL
 `
+
+const rover = ({ position }) => ({
+  position,
+  orientation: '',
+  lost: false,
+  path: '',
+  sniff: func
+});
