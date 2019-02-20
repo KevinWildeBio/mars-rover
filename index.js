@@ -12,7 +12,6 @@ const smellList = [];
 const compassArray = ['N', 'E', 'S', 'W'];
 let grid;
 
-
 const stringToArray = (string, seperator) => string.split(seperator);
 
 const rover = (position, path) => ({
@@ -25,16 +24,25 @@ const rover = (position, path) => ({
 });
 
 function setupMission(input) {
-  grid = stringToArray('5 3 E', ' ');
-  const position = stringToArray('1 1 E', ' ');
-  const spirit = rover(position, 'RFRFRFRF');
-  beginMission(spirit);
+  grid = stringToArray('5 3', ' ');
+  const robots = [
+    rover(stringToArray('1 1 E', ' '), 'RFRFRFRF'),
+    rover(stringToArray('3 2 N', ' '), 'FRRFLLFFRRFLL'),
+    rover(stringToArray('0 3 W', ' '), 'LLFFFLFLFL'),
+  ];
+
+  beginMission(robots);
 }
 
-function beginMission(robot) {
+function beginMission(robots) {
+  robots.forEach(robot => navigatePath(robot));
+}
+
+function navigatePath(robot) {
   for (var i = 0; i < robot.path.length; i++) {
-    if (robot.lost) break;
-    console.log(robot.sniff('SMELL: ', robot.position));
+    // console.log('SMELL: ', robot.sniff(robot.position));
+    console.log('GRID: ', grid);
+
     if (robot.path[i] === 'R') {
       let currentIndex = compassArray.indexOf(robot.orientation);
       let newIndex = currentIndex - 1 < 0 ? compassArray.length - 1 : currentIndex - 1;
@@ -52,15 +60,30 @@ function beginMission(robot) {
       if (robot.orientation === 'S') robot.xLoc = robot.xLoc - 1;
       if (robot.orientation === 'E') robot.yLoc = robot.yLoc + 1;
       if (robot.orientation === 'W') robot.yLoc = robot.yLoc - 1;
+      if (
+        robot.xLoc < grid[0] ||
+        robot.xLoc > grid[0] ||
+        robot.yLoc < grid[1] ||
+        robot.yLoc > grid[1]
+      ) {
+        console.log('LOST');
+        robot.lost === true;
+      }
     }
 
-    console.log('ORI: ', robot.orientation);
-    console.log('POSITION: ', robot.xLoc, robot.yLoc);
+    console.log('LOST: ', robot.lost);
+
+    if (robot.lost) {
+      sendMessage(robot);
+      break;
+    }
+
+    sendMessage(robot);
   }
 }
 
-const navigatePath = () => {
-  console.log(moveSet.R);
+function sendMessage(robot) {
+  console.log(`${robot.xLoc} ${robot.yLoc} ${robot.orientation} ${robot.lost ? 'LOST' : ''}`);
 }
 
 setupMission(input);
