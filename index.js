@@ -1,4 +1,4 @@
-const input = `5 3
+const data = `5 3
 1 1 E
 RFRFRFRF
 3 2 N
@@ -8,7 +8,7 @@ LLFFFLFLFL`
 
 const smellList = [];
 const compassArray = ['N', 'E', 'S', 'W'];
-let grid
+let grid;
 
 const rover = (position, path) => ({
   xLoc: parseInt(position[0], 10),
@@ -19,15 +19,15 @@ const rover = (position, path) => ({
   sniff: string => smellList.includes(string)
 });
 
-function setupMission(input) {
-  const data = input.split('\n');
+function setupMission(data) {
+  const dataArray = data.split('\n');
   let robots = [];
 
-  grid = data[0].split(' ');
-  data.shift();
+  grid = dataArray[0].split(' ');
+  dataArray.shift();
 
-  for (var i = 0; i < data.length; i += 2) {
-    robots.push(rover(data[i].split(' '), data[i+1]))
+  for (var i = 0; i < dataArray.length; i += 2) {
+    robots.push(rover(dataArray[i].split(' '), dataArray[i+1]))
   }
 
   beginMission(robots);
@@ -39,13 +39,15 @@ function beginMission(robots) {
 
 function navigatePath(robot) {
   for (var i = 0; i < robot.path.length; i++) {
-    
+
+    //pivot robot
     if (robot.path[i] === 'R') robot.orientation = pivotRight(robot);
     if (robot.path[i] === 'L') robot.orientation = pivotLeft(robot);
 
+    //sniff
     if (robot.sniff(`${robot.xLoc}${robot.yLoc}${robot.orientation}`)) continue;
 
-    //wanted to move this out into its own function but ran out of time
+    //move robot forwards - wanted to move this out into its own function but ran out of time
     if (robot.path[i] === 'F') {
       let newXLoc = robot.xLoc,
         newYLoc = robot.yLoc;
@@ -69,6 +71,7 @@ function navigatePath(robot) {
       }
     }
 
+    // if robot lost breat out of loop
     if (robot.lost) break;
   }
 
@@ -95,4 +98,4 @@ function sendMessage(robot) {
   console.log(`${robot.xLoc} ${robot.yLoc} ${robot.orientation} ${robot.lost ? 'LOST' : ''}`);
 }
 
-setupMission(input);
+setupMission(data);
