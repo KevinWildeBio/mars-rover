@@ -8,19 +8,21 @@ const input = `
   LLFFFLFLFL
 `
 
-const stringToArray = string => string.split('');
+const stringToArray = ( string, seperator ) => string.split(seperator);
 
 const rover = ( position, path ) => ({
-  position,
-  orientation: '',
+  position: [position[0], position[1]],
+  orientation: position[2],
   lost: false,
-  path: stringToArray(path),
+  path: stringToArray(path, ''),
   sniff: () => console.log('SNIFF!')
 });
 
 function mission(input) {
   console.log(input);
-  const sprit = rover([5,3], 'RFRFRFRF');
+  const grid = stringToArray('5 3 E', ' ');
+  const position = stringToArray('1 1 E', ' ');
+  const sprit = rover(position, 'RFRFRFRF');
   console.log(sprit);
 }
 
