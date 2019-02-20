@@ -1,12 +1,10 @@
-const input = `
-  5 3
-  1 1 E
-  RFRFRFRF
-  3 2 N
-  FRRFLLFFRRFLL
-  0 3 W
-  LLFFFLFLFL
-`
+const input = `5 3
+1 1 E
+RFRFRFRF
+3 2 N
+FRRFLLFFRRFLL
+0 3 W
+LLFFFLFLFL`
 
 const smellList = [];
 const compassArray = ['N', 'E', 'S', 'W'];
@@ -24,6 +22,7 @@ const rover = (position, path) => ({
 });
 
 function setupMission(input) {
+  console.log(input.split('\n'));
   grid = stringToArray('5 3', ' ');
   const robots = [
     rover(stringToArray('1 1 E', ' '), 'RFRFRFRF'),
@@ -41,7 +40,7 @@ function beginMission(robots) {
 function navigatePath(robot) {
   for (var i = 0; i < robot.path.length; i++) {
     // console.log('SMELL: ', robot.sniff(robot.position));
-    console.log('GRID: ', grid);
+    // console.log('GRID: ', grid);
 
     if (robot.path[i] === 'R') {
       let currentIndex = compassArray.indexOf(robot.orientation);
@@ -66,12 +65,12 @@ function navigatePath(robot) {
         robot.yLoc < grid[1] ||
         robot.yLoc > grid[1]
       ) {
-        console.log('LOST');
+        // console.log('LOST');
         robot.lost === true;
       }
     }
 
-    console.log('LOST: ', robot.lost);
+    // console.log('LOST: ', robot.lost);
 
     if (robot.lost) {
       sendMessage(robot);
@@ -83,7 +82,7 @@ function navigatePath(robot) {
 }
 
 function sendMessage(robot) {
-  console.log(`${robot.xLoc} ${robot.yLoc} ${robot.orientation} ${robot.lost ? 'LOST' : ''}`);
+  // console.log(`${robot.xLoc} ${robot.yLoc} ${robot.orientation} ${robot.lost ? 'LOST' : ''}`);
 }
 
 setupMission(input);
