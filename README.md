@@ -4,7 +4,7 @@ Clone repo
 
 run `yarn`
 
-run `npm start`
+run `yarn start`
 
 goto `localhost:3000` in any browser
 
